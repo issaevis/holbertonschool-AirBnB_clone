@@ -24,7 +24,7 @@ class BaseModel:
     def to_dict(self):
         '''adds to a dict and returns it'''
         dictionary = self.__dict__
-        setattr(self, "__class__", self.__class__.__name__)
-        setattr(self, "created_at", self.created_at.isoformat())
-        setattr(self, "updated_at", self.updated_at.isoformat())
+        dictionary["__class__"] = self.__class__.__name__
+        dictionary["created_at"] = dictionary["created_at"].isoformat()
+        dictionary["updated_at"] = dictionary["updated_at"].isoformat()
         return dictionary
