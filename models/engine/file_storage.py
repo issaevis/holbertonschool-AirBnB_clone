@@ -16,7 +16,7 @@ class FileStorage:
 
     def new(self, obj):
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = repr(obj)
+        self.__objects[key] = str(obj)
 
     def save(self):
         with open(self.__file_path, 'w') as outfile:
@@ -25,9 +25,11 @@ class FileStorage:
     def reload(self):
         if not os.path.exists(self.__file_path):
             return
+        elif os.path.getsize(self.__file_path) == 0:
+            return
         else:
             with open(self.__file_path, "r") as infile:
-                self.objects = json.loads(infile.read())
+                self.__objects = json.loads(infile.read())
 
     @property
     def file_path(self):
