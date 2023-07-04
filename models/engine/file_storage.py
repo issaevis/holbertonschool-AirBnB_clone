@@ -7,8 +7,8 @@ import os
 
 class FileStorage:
     """Class to handle file storage"""
-    def __init__(self, file_path):
-        self.__file_path = file_path
+    def __init__(self):
+        self.__file_path = "filezz.json"
         self.__objects = {}
 
     def all(self):
