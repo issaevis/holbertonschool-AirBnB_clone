@@ -27,7 +27,7 @@ class BaseModel:
 
     def __str__(self):
         '''messes with the str return'''
-        return (f"[{self.__class__.__name__}] ({self.id}) <{self.__dict__}>")
+        return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
 
     def save(self):
         '''changes the savedate'''
