@@ -16,7 +16,7 @@ class BaseModel:
                     setattr(self, key, datetime.strptime
                             (value, "%Y-%m-%dT%H:%M:%S.%f"))
                 elif key == "__class__":
-                    setattr(self, "__class__", str(value))
+                    setattr(self, "__class__", type(self))
                 else:
                     setattr(self, key, value)
         else:
