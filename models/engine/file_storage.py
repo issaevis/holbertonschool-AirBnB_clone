@@ -3,41 +3,36 @@
 
 import json
 import os
+from models.base_model import BaseModel
 
 
 class FileStorage:
     """Class to handle file storage"""
-    def __init__(self):
-        self.__file_path = "file.json"
-        self.__objects = {}
+
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = str(obj)
+        FileStorage.__objects[key] = obj
 
     def save(self):
-        with open(self.__file_path, 'w') as outfile:
-            outfile.write(json.dumps(self.__objects))
+        new_dict = {}
+        for key in FileStorage.__objects:
+            new_dict[key] = FileStorage.__objects[key].to_dict()
+        with open(FileStorage.__file_path, 'w') as outfile:
+            json.dump(new_dict, outfile)
 
     def reload(self):
-        if not os.path.exists(self.__file_path):
+        if not os.path.exists(FileStorage.__file_path):
             return
-        elif os.path.getsize(self.__file_path) == 0:
+        elif os.path.getsize(FileStorage.__file_path) == 0:
             return
         else:
-            with open(self.__file_path, "r") as infile:
-                self.__objects = json.loads(infile.read())
-
-    @property
-    def file_path(self):
-        return self.__file_path
-
-    @file_path.setter
-    def file_path(self, value):
-        if not isinstance(value, str) or not os.path.exists(value):
-            raise ValueError("Invalid path for the JSON data")
-        else:
-            self.__file_path = value
+            with open(FileStorage.__file_path, "r") as infile:
+                for key, value in json.load(infile).items():
+                    value = eval(value["__class__"])(**value)
+                    self.__objects[key] = value

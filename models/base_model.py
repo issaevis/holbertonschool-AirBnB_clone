@@ -4,8 +4,7 @@
 
 from uuid import uuid4
 from datetime import datetime
-from . import storage
-
+import models
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -23,7 +22,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         '''messes with the str return'''
@@ -32,7 +31,7 @@ class BaseModel:
     def save(self):
         '''changes the savedate'''
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         '''adds to a dict and returns it'''
