@@ -14,9 +14,7 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     setattr(self, key, datetime.strptime
                             (value, "%Y-%m-%dT%H:%M:%S.%f"))
-                elif key == "__class__":
-                    setattr(self, "__class__", type(self))
-                else:
+                if key != "__class__":
                     setattr(self, key, value)
         else:
             self.id = str(uuid4())
@@ -32,11 +30,13 @@ class BaseModel:
         '''changes the savedate'''
         self.updated_at = datetime.now()
         models.storage.save()
+        return self.updated_at
 
     def to_dict(self):
         '''adds to a dict and returns it'''
-        dictionary = self.__dict__
-        dictionary["__class__"] = self.__class__.__name__
-        dictionary["created_at"] = dictionary["created_at"].isoformat()
-        dictionary["updated_at"] = dictionary["updated_at"].isoformat()
+        dictionary = self.__dict__.copy()
+        print(type(dictionary["updated_at"]))
+        dictionary["__class__"] = str(self.__class__.__name__)
+        dictionary["created_at"] = self.created_at.isoformat()
+        dictionary["updated_at"] = self.updated_at.isoformat()
         return dictionary
