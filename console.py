@@ -59,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = f"{class_name}.{instance_id}"
         if key in objs:
-            instance = objs[key]     
+            instance = objs[key]
             print(instance)
             return
 
@@ -77,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
         if len(prompt) < 2:
             print("** instance id missing **")
             return False
-        
+
         objs = storage.all()
         class_name = prompt[0]
         instance_id = prompt[1]
@@ -89,7 +89,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("Key not found")
 
-
     def do_all(self, arg):
         '''Prints all instances of a Class'''
         if not arg:
@@ -98,9 +97,9 @@ class HBNBCommand(cmd.Cmd):
         if arg not in models:
             print("** class doesn't exist **")
             return False
-        
+
         print(list(storage.all().items()))
-        
+
     def do_update(self, arg):
         '''Updates values to said instance'''
         arg = arg.split()
@@ -130,8 +129,7 @@ class HBNBCommand(cmd.Cmd):
         setattr(value, arg[2], val[1])
         storage.save()
 
-        
 
 if __name__ == '__main__':
-    models = ["BaseModel", "User"]
+    models = ["BaseModel", "User", 'City', 'State', 'Review', 'Amenity', 'Place']
     HBNBCommand().cmdloop()
