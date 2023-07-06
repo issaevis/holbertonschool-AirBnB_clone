@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 '''BaseModel class to build on top of'''
-
-
 from uuid import uuid4
 from datetime import datetime
 import models
@@ -27,20 +25,21 @@ class BaseModel:
                 models.storage.new(self)
 
     def __str__(self):
-        '''messes with the str return'''
-        return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
+        string = "[{}]".format(self.__class__.__name__)
+        string += " ({}) {}".format(self.id, self.__dict__)
+        return string
 
     def save(self):
         '''changes the savedate'''
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.utcnow()
         models.storage.save()
         return self.updated_at
 
     def to_dict(self):
-        '''adds to a dict and returns it'''
-        dictionary = self.__dict__.copy()
-        print(type(dictionary["updated_at"]))
-        dictionary["__class__"] = str(self.__class__.__name__)
-        dictionary["created_at"] = self.created_at.isoformat()
-        dictionary["updated_at"] = self.updated_at.isoformat()
-        return dictionary
+        '''dict representation'''
+        new_d = {}
+        new_d = self.__dict__.copy()
+        new_d["__class__"] = str(self.__class__.__name__)
+        new_d['created_at'] = self.created_at.isoformat()
+        new_d['updated_at'] = self.updated_at.isoformat()
+        return new_d
