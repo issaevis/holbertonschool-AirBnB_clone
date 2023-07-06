@@ -2,6 +2,6 @@
 from models.base_model import BaseModel
 '''Amenity Module'''
 
-class City(BaseModel):
+class Amenity(BaseModel):
     """Class amenity"""
     name = ""

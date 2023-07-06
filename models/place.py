@@ -2,7 +2,7 @@
 from models.base_model import BaseModel
 '''Place Module'''
 
-class City(BaseModel):
+class Place(BaseModel):
     """Class Place that inherits from BaseModel"""
     city_id = ""
     user_id = ""
