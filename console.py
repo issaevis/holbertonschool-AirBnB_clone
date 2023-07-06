@@ -6,6 +6,7 @@ import cmd
 import sys
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -17,6 +18,7 @@ class HBNBCommand(cmd.Cmd):
         exit()
 
     def emptyline(self):
+        '''Do nothing when an empty line is entered'''
         pass
 
     def do_EOF(self, arg):
@@ -24,6 +26,7 @@ class HBNBCommand(cmd.Cmd):
         self.do_quit("")
 
     def do_create(self, arg):
+        '''creates a new instance of a Class'''
         if not arg:
             print("** class name missing **")
             return False
@@ -36,6 +39,7 @@ class HBNBCommand(cmd.Cmd):
 
     '''Fixed errors, but doublecheck'''
     def do_show(self, arg):
+        '''shows all details about one particular instance.'''
         if not arg:
             print("** class name missing **")
             return False
@@ -62,6 +66,7 @@ class HBNBCommand(cmd.Cmd):
         print('** no instance found **')
 
     def do_destroy(self, arg):
+        '''Removes instance from memory and JSON file'''
         if not arg:
             print("** class name missing **")
             return False
@@ -86,6 +91,7 @@ class HBNBCommand(cmd.Cmd):
 
 
     def do_all(self, arg):
+        '''Prints all instances of a Class'''
         if not arg:
             print("** class name missing **")
             return False
