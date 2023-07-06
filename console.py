@@ -96,33 +96,34 @@ class HBNBCommand(cmd.Cmd):
         print(list(storage.all().items()))
         
     def do_update(self, arg):
-        if not arg:
+        '''Updates values to said instance'''
+        arg = arg.split()
+        flag = 0
+        if len(arg) == 0:
             print("** class name missing **")
             return False
-        prompt = arg.split(" ")
-        if prompt[0] not in models:
+        if arg[0] not in models:
             print("** class doesn't exist **")
             return False
-        if len(prompt) < 2:
+        if len(arg) == 1:
             print("** instance id missing **")
             return False
-        if len(prompt) == 2:
+        for key, value in storage.all().items():
+            if value.id == (arg[1]):
+                flag += 1
+        if flag == 0:
+            print("** no instance found **")
+            return False
+        if len(arg) == 2:
             print("** attribute name missing **")
-        if len(prompt) == 3:
+            return False
+        if len(arg) == 3:
             print("** value missing **")
+            return False
+        val = arg[3].split('"')
+        setattr(value, arg[2], val[1])
+        storage.save()
 
-        objs = storage.all()
-        class_name = prompt[0]
-        instance_id = prompt[1]
-        name = prompt[2]
-        val = prompt[3]
-        key = f"{class_name}.{instance_id}"
-
-        if key in objs:
-            instance = objs[key].to_dict()
-            print(instance)
-            #setattr(instance, name, val)
-            #storage.save()
         
 
 if __name__ == '__main__':
