@@ -69,7 +69,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arg) == 0:
             print("** class name missing **")
             return False
-        if arg[0] not in ls:
+        if arg[0] not in models:
             print("** class doesn't exist **")
             return False
         if len(arg) != 2:
@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         '''Prints all str repr of instance of said Class'''
         if len(arg) != 0:
-            if arg not in ls:
+            if arg not in models:
                 print("** class doesn't exist **")
                 return False
             for key, value in storage.all().items():
