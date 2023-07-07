@@ -4,6 +4,7 @@
 
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -20,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, arg):
         '''Quit command to exit the program'''
-        exit()
+        return True
 
     def emptyline(self):
         '''Do nothing when an empty line is entered'''
@@ -38,72 +39,61 @@ class HBNBCommand(cmd.Cmd):
         if arg not in models:
             print("** class doesn't exist **")
             return False
-        instance = BaseModel()
-        instance.save()
-        print(f"{instance.id}")
+        new = eval(arg)()
+        storage.save()
+        print(new.id)
 
     '''Fixed errors, but doublecheck'''
     def do_show(self, arg):
         '''shows all details about one particular instance.'''
-        if not arg:
+        arg = arg.split()
+        if len(arg) == 0:
             print("** class name missing **")
             return False
-        prompt = arg.split(" ")
-        objs = storage.all()
-
-        if prompt[0] not in models:
+        if arg[0] not in models:
             print("** class doesn't exist **")
             return False
-
-        if len(prompt) < 2:
+        if len(arg) == 1:
             print("** instance id missing **")
             return False
-
-        class_name = prompt[0]
-        instance_id = prompt[1]
-
-        key = f"{class_name}.{instance_id}"
-        if key in objs:
-            instance = objs[key]
-            print(instance)
-            return
-
+        for key, value in storage.all().items():
+            if value.id == arg[1]:
+                if value.__class__.__name__ == arg[0]:
+                    print(value)
+                    return
         print('** no instance found **')
 
     def do_destroy(self, arg):
         '''Removes instance from memory and JSON file'''
-        if not arg:
+        arg = arg.split()
+        if len(arg) == 0:
             print("** class name missing **")
             return False
-        prompt = arg.split(" ")
-        if prompt[0] not in models:
+        if arg[0] not in ls:
             print("** class doesn't exist **")
             return False
-        if len(prompt) < 2:
+        if len(arg) != 2:
             print("** instance id missing **")
             return False
-
-        objs = storage.all()
-        class_name = prompt[0]
-        instance_id = prompt[1]
-
-        key = f"{class_name}.{instance_id}"
-        if key in objs:
-            objs.pop(key)
+        check = arg[0] + '.' + arg[1]
+        if check in storage.all().keys():
+            del storage.all()[check]
             storage.save()
         else:
-            print("Key not found")
+            print('** no instance found **')
 
     def do_all(self, arg):
-        '''Prints all instances of a Class'''
-        if not arg:
-            print("** class name missing **")
-            return False
-        if arg not in models:
-            print("** class doesn't exist **")
-            return False
-
-        print(list(storage.all().items()))
+        '''Prints all str repr of instance of said Class'''
+        if len(arg) != 0:
+            if arg not in ls:
+                print("** class doesn't exist **")
+                return False
+            for key, value in storage.all().items():
+                if value.__class__.__name__ == arg:
+                    print(value)
+        else:
+            for key, value in storage.all().items():
+                print(value)
 
     def do_update(self, arg):
         '''Updates values to said instance'''
