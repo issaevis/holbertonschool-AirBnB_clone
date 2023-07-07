@@ -14,7 +14,6 @@ from models.place import Place
 from models.review import Review
 
 
-
 class HBNBCommand(cmd.Cmd):
     '''Class to create the command line interface of our project.'''
     prompt = '(hbnb) '
@@ -137,5 +136,6 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    models = ["BaseModel", "User", 'City', 'State', 'Review', 'Amenity', 'Place']
+    models = ["BaseModel", "User", 'City', 'State', 
+              'Review', 'Amenity', 'Place']
     HBNBCommand().cmdloop()
